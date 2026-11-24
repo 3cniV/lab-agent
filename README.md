@@ -66,10 +66,9 @@ that never appeared in tool output.
 - The tool schema describes the profiles as "fast, shallow" and "slow, all ports",
   which may steer the agent toward escalating. A control with neutral profile
   names has not been run.
-- `[CONFIRM: say whether the system prompt included a line telling the agent to
-  state which ports were not scanned and decide whether deeper coverage is
-  needed. If yes, say the escalation may reflect instruction-following, not
-  independent judgment.]`
+- `- The system prompt did not mention scan depth or coverage. The only hint was the
+  tool schema, which describes the profiles as "fast, shallow" and "slow, all ports".
+  A run with neutral profile names is future work.`
 - Scoring covers open TCP ports only. It does not evaluate the correctness of
   the risk rankings or mitigations, and UDP services are out of scope.
 - The container lacks some Metasploitable 2 services (for example BIND and NFS),
