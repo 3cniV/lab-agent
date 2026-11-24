@@ -1,10 +1,13 @@
 import ipaddress
 
-# Only these networks may ever be scanned. Edit to match your lab.
-ALLOWED_NETWORKS = [ipaddress.ip_network("192.168.56.0/24")]
+# Only these networks may ever be scanned.
+ALLOWED_NETWORKS = [
+    ipaddress.ip_network("192.168.56.0/24"),   # VirtualBox host-only lab network
+    ipaddress.ip_network("172.17.0.0/24"),     # Docker bridge (Metasploitable container)
+]
 
-# Never scan these: your laptop (host) and the Kali VM itself.
-EXCLUDED_HOSTS = ["192.168.56.1", "192.168.56.108"]
+# Never scan: laptop, VirtualBox DHCP server, Kali itself (both addresses).
+EXCLUDED_HOSTS = ["192.168.56.1", "192.168.56.100", "192.168.56.108", "172.17.0.1"]
 
 
 def check_target(target: str) -> None:
