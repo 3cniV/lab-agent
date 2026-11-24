@@ -37,14 +37,19 @@ def main():
 
     for step in range(MAX_STEPS):
         resp = client.messages.create(
-            model=MODEL, max_tokens=2000, system=SYSTEM,
+            model=MODEL, max_tokens=4096, system=SYSTEM,
             tools=TOOL_SCHEMAS, messages=messages,
         )
+        record({"event": "model_call", "step": step, "stop_reason": resp.stop_reason,
+                "input_tokens": resp.usage.input_tokens,
+                "output_tokens": resp.usage.output_tokens})
         messages.append({"role": "assistant", "content": resp.content})
 
         calls = [b for b in resp.content if b.type == "tool_use"]
         if not calls:
             final_text = "".join(b.text for b in resp.content if b.type == "text")
+            if resp.stop_reason == "max_tokens":
+                final_text += "\n\n[REPORT TRUNCATED: hit max_tokens]"
             record({"event": "final", "step": step})
             break
 

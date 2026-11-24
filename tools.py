@@ -1,5 +1,6 @@
 import subprocess
 import xml.etree.ElementTree as ET
+import os
 
 from guardrails import check_target, EXCLUDED_HOSTS
 
@@ -40,7 +41,7 @@ def scan_services(host: str) -> dict:
     if host in EXCLUDED_HOSTS:
         return {"error": f"{host} is excluded from scanning"}
 
-    cmd = ["nmap", "-sV", "--top-ports", "100", "-T4", "-oX", "-", host]
+    cmd = ["nmap", "-sV", "--top-ports", os.environ.get("TOP_PORTS", "100"), "-T4", "-oX", "-", host]
     proc = subprocess.run(cmd, capture_output=True, text=True, timeout=300)
     if proc.returncode != 0:
         return {"error": proc.stderr.strip()}
