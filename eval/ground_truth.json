@@ -30,8 +30,9 @@
     "8180": "http",
     "8787": "drb"
   },
-  "excluded_from_scoring": {
-    "43563": "ephemeral high port, owner not identified"
+    "excluded_from_scoring": {
+    "43563": "ephemeral high port of the first container, owner not identified",
+    "39413": "ephemeral high port of the recreated container (changes whenever the container is recreated)"
   },
   "notes": "TCP only. UDP services (snmpd, nmbd, portmap) not covered."
 }
