@@ -73,7 +73,11 @@ that never appeared in tool output.
   the risk rankings or mitigations, and UDP services are out of scope.
 - The container lacks some Metasploitable 2 services (for example BIND and NFS),
   so it is not identical to the full VM.
-
+- Scoring ignores TCP ports 32768-65535. The container opens one random high port each
+  time it starts (43563 in the first container, 39413 in the recreated one), which is
+  not part of its intended service set and would otherwise count as a false positive.
+  This also means any real service above port 32767 would be ignored; the
+  Metasploitable 2 container has none.
 ## Reproduce
 
 ```bash
