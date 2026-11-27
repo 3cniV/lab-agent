@@ -1,3 +1,4 @@
+import os
 import subprocess
 import xml.etree.ElementTree as ET
 
@@ -41,7 +42,7 @@ def scan_hosts(subnet: str) -> dict:
     return {"subnet": subnet, "count": len(hosts), "hosts_up": hosts}
 
 
-def scan_services(host: str, profile: str = "top100") -> dict:
+def scan_services(host: str, profile: str = "_PROFILE_DESC") -> dict:
     """Service/version detection on ONE allowlisted host, using a named port profile."""
     check_target(host)
     if "/" in host:
@@ -72,6 +73,11 @@ def scan_services(host: str, profile: str = "top100") -> dict:
         })
     return {"host": host, "profile": profile, "open_ports": ports}
 
+_DESC_DESCRIPTIVE = "PASTE YOUR CURRENT profile description text here (the 'fast, shallow ... slow' wording)"
+_DESC_NEUTRAL = ("Scan profile. top100 = the 100 most common TCP ports. "
+                 "top1000 = the 1000 most common TCP ports. "
+                 "extended = TCP ports 1-10000. full = all 65535 TCP ports.")
+_PROFILE_DESC = _DESC_NEUTRAL if os.environ.get("TOOL_DESC") == "neutral" else _DESC_DESCRIPTIVE
 
 TOOL_SCHEMAS = [
     {

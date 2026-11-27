@@ -58,6 +58,10 @@ that never appeared in tool output.
    background claims (for example, that vsftpd 2.3.4 is a known backdoored release)
    as "analyst context, not from tool output", but some inferences were unflagged.
    A claim-level audit is future work.
+6. **- Haiku's `coverage_note` disclosed the limitation in the runs checked:** it stated that only
+  the top-1000 profile was run, that extended and full scans were not, and that
+  additional services may exist. The shortfall is incomplete scanning, not a
+  false claim of full coverage.
 
 **Limitations**
 

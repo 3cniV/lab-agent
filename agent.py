@@ -82,7 +82,8 @@ def main():
         log.write(json.dumps(event) + "\n")
         log.flush()
 
-    record({"event": "start", "model": MODEL, "target": TARGET, "goal": GOAL})
+    record({"event": "start", "model": MODEL, "target": TARGET, "goal": GOAL, "label": os.environ.get("LABEL", ""),
+            "tool_desc": os.environ.get("TOOL_DESC", "descriptive")})
     messages = [{"role": "user", "content": GOAL}]
     report = None
 

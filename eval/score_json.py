@@ -24,8 +24,8 @@ def tool_ports(path):
     return ports - ignore, calls
 
 
-print("| run | calls | tool recall | report recall | precision | invented | risks by basis |")
-print("|---|---|---|---|---|---|---|")
+print("| label | run | calls | tool recall | report recall | precision | invented | risks by basis |")
+print("|---|---|---|---|---|---|---|---|")
 for rep in sorted(glob.glob("reports/report-*.json")):
     stamp = rep[len("reports/report-"):-len(".json")]
     log = f"logs/run-{stamp}.jsonl"
@@ -34,10 +34,13 @@ for rep in sorted(glob.glob("reports/report-*.json")):
     data = json.load(open(rep))
     said = {int(s["port"]) for s in data.get("services", [])} - ignore
     seen, calls = tool_ports(log)
+    label = json.loads(open(log).readline()).get("label", "")
     t_rec = len(seen & truth) / len(truth)
     r_rec = len(said & truth) / len(truth)
     prec = len(said & truth) / len(said) if said else 0
     invented = sorted(said - seen)
-    basis = dict(Counter(r.get("basis") for r in data.get("risks", [])))
-    print(f"| {stamp} | {calls} | {t_rec:.0%} | {r_rec:.0%} | {prec:.0%} | "
+    risks = data.get("risks", [])
+    basis = ({"malformed (risks was a string)": 1} if isinstance(risks, str)
+             else dict(Counter(r.get("basis") if isinstance(r, dict) else "malformed" for r in risks)))
+    print(f"| {label} | {stamp} | {calls} | {t_rec:.0%} | {r_rec:.0%} | {prec:.0%} | "
           f"{invented or 'none'} | {basis} |")
