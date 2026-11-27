@@ -82,6 +82,15 @@ that never appeared in tool output.
   not part of its intended service set and would otherwise count as a false positive.
   This also means any real service above port 32767 would be ignored; the
   Metasploitable 2 container has none.
+- Claim-level audit: I checked one Sonnet report (10 risks) against the raw scan
+  log. All evidence quotes matched the scan output and no ports or versions were
+  invented. Of the 3 risks labelled `tool_output`, 2 mixed an observed fact (open
+  ports, version strings) with a background-knowledge claim (cleartext protocols,
+  end-of-life versions), so the label was too generous. Exploit-related claims were
+  consistently hedged ("the scan did not test..."). The cause is the schema: `basis`
+  is one label per risk, but a risk usually contains both an observation and an
+  interpretation. A better design would split each risk into separate
+  `observed` and `background` fields. One report is a small sample.
 ## Reproduce
 
 ```bash
